@@ -12,6 +12,8 @@ struct OTPScreen: View {
 	@StateObject var otpVM: OTPViewModel
 	@ObservedObject var phoneNumVM: PhoneNumberViewModel
 	
+	@Environment(\.dismiss) private var dismiss
+	
 	var body: some View {
 			VStack(alignment: .leading, spacing: 8.0) {
 				
@@ -21,7 +23,7 @@ struct OTPScreen: View {
 						.fontWeight(.medium)
 					
 					Button {
-						print("")
+						dismiss()
 					} label: {
 						Image(systemName: "pencil")
 							.frame(width: 14.0, height: 14.0)

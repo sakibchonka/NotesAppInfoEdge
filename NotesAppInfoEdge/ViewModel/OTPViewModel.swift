@@ -14,7 +14,9 @@ class OTPViewModel: ObservableObject {
 	
 	@Published var otp: String = ""
 	@Published var timeRemaining: Int = 59
-	@Published var errorMessage: String?
+	@Published var isTimeEnded: Bool = false
+	@Published var errorMessage: String = ""
+	@Published var isError: Bool = false
 	
 	@Published var notesResponse: NotesAPIModel?
 	@Published var shouldNavigateToNotes = false
@@ -26,17 +28,25 @@ class OTPViewModel: ObservableObject {
 	}
 	
 	func verifyOTP() {
+		guard !self.isTimeEnded else {
+			self.isError = true
+			self.errorMessage = "OTP expired"
+			return
+		}
+		
 		NetworkManager.shared.callAPI(.otp(number: phoneNumberWithCountryCode, otp: otp), responseType: AuthResponse.self)
 			.sink { result in
 				if case .failure(let error) = result {
-					print("OTP Error: \(error)")
+					self.isError = true
+					self.errorMessage = "OTP Error: \(error)"
 				}
 			} receiveValue: { response in
 				if let token = response.token {
 					UserDefaults.standard.set(token, forKey: "authToken")
 					self.fetchNotes(with: token)
 				} else {
-					print("Auth token was nil")
+					self.isError = true
+					self.errorMessage = "Auth token was nil"
 				}
 			}
 			.store(in: &cancellables)
@@ -54,6 +64,7 @@ class OTPViewModel: ObservableObject {
 				}
 				
 				guard let data = data else {
+					self.isError = true
 					self.errorMessage = "No data received"
 					return
 				}
@@ -63,10 +74,16 @@ class OTPViewModel: ObservableObject {
 					self.notesResponse = decoded
 					self.shouldNavigateToNotes = true
 				} catch {
+					self.isError = true
 					self.errorMessage = "Decoding error: \(error)"
 				}
 			}
 		}.resume()
+	}
+	
+	func resetTimer() {
+		self.timeRemaining = 59
+		self.isTimeEnded = false
 	}
 	
 	func startTimer() {
@@ -75,6 +92,7 @@ class OTPViewModel: ObservableObject {
 			if self.timeRemaining > 0 {
 				self.timeRemaining -= 1
 			} else {
+				self.isTimeEnded = true
 				self.timer?.invalidate()
 			}
 		}

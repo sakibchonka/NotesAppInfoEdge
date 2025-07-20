@@ -27,13 +27,13 @@ struct PhoneNumberScreen: View {
 					TextField("+91", text: $phoneNumVM.countryCode)
 						.padding()
 						.frame(width: 64, height: 36)
-						.background(RoundedRectangle(cornerRadius: 8.0).stroke(Color.gray)) //#C4C4C4
+						.background(RoundedRectangle(cornerRadius: 8.0).stroke(Color.gray))
 						.keyboardType(.phonePad)
 					
 					TextField("Enter Phone", text: $phoneNumVM.phoneNumber)
 						.padding()
 						.frame(width: 147, height: 36)
-						.background(RoundedRectangle(cornerRadius: 8.0).stroke(Color.gray)) //#C4C4C4
+						.background(RoundedRectangle(cornerRadius: 8.0).stroke(Color.gray))
 						.keyboardType(.phonePad)
 				}
 				
@@ -47,7 +47,7 @@ struct PhoneNumberScreen: View {
 						if success {
 							showOTPScreen = true
 						} else {
-							//show alert
+							alertManager.show(title: "Error Registering PhoneNumber", message: "Please try after some time")
 						}
 					}
 				} label: {

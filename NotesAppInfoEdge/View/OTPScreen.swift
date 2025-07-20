@@ -58,8 +58,21 @@ struct OTPScreen: View {
 				}
 				.padding([.top, .bottom], 12.0)
 				
-				Text("00:\(String(format: "%02d", otpVM.timeRemaining))")
-					.fontWeight(.bold)
+				VStack {
+					
+					Text("00:\(String(format: "%02d", otpVM.timeRemaining))")
+						.fontWeight(.bold)
+						.foregroundStyle(otpVM.isTimeEnded ? Color.red : Color.primary)
+					
+					if otpVM.isTimeEnded {
+						Button("Resend") {
+							otpVM.resetTimer()
+							otpVM.startTimer()
+						}
+						.fontWeight(.semibold)
+						.foregroundColor(.blue)
+					}
+				}
 			}
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -77,5 +90,8 @@ struct OTPScreen: View {
 			}
 		}
 		.navigationBarBackButtonHidden(true)
+		.alert(otpVM.errorMessage, isPresented: $otpVM.isError) {
+			Button("Ok", role: .cancel) {}
+		}
 	}
 }

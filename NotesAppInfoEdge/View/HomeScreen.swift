@@ -42,6 +42,7 @@ struct NotesScreen: View {
 			}
 			.tag(3)
 		}
+		.navigationBarBackButtonHidden(true)
 	}
 }
 

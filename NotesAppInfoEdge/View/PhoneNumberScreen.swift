@@ -19,8 +19,11 @@ struct PhoneNumberScreen: View {
 			VStack(alignment: .leading, spacing: 8.0) {
 				Text("Get OTP")
 					.font(.title2)
-				Text("Enter Your Phone Number")
-					.font(.largeTitle.bold())
+				VStack(alignment: .leading, spacing: -8) {
+					Text("Enter Your")
+					Text("Phone Number")
+				}
+				.font(.largeTitle.weight(.heavy))
 				
 				HStack(spacing: 8.0) {
 					

@@ -33,9 +33,11 @@ struct OTPScreen: View {
 				}
 			}
 			
-			
-			Text("Enter The \nOTP")
-				.font(.largeTitle.bold().weight(.heavy))
+			VStack(alignment: .leading, spacing: -8) {
+				Text("Enter The")
+				Text("OTP")
+			}
+			.font(.largeTitle.bold().weight(.heavy))
 			
 			TextField("", text: $otpVM.otp)
 				.fontWeight(.bold)

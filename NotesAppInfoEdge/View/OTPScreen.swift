@@ -13,7 +13,6 @@ struct OTPScreen: View {
 	@ObservedObject var phoneNumVM: PhoneNumberViewModel
 	
 	var body: some View {
-		NavigationStack {
 			VStack(alignment: .leading, spacing: 8.0) {
 				
 				HStack {
@@ -75,6 +74,6 @@ struct OTPScreen: View {
 					NotesScreen(response: response)
 				}
 			}
-		}
+			.navigationBarBackButtonHidden(true)
 	}
 }

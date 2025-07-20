@@ -12,6 +12,10 @@ class PhoneNumberViewModel: ObservableObject {
 	@Published var countryCode: String = "+91"
 	@Published var phoneNumber: String = ""
 	
+	var isValidPhoneNumber: Bool {
+		phoneNumber.count == 10 && phoneNumber.allSatisfy { $0.isNumber }
+	}
+	
 	func sendPhoneNumber(completion: @escaping (Bool) -> Void) {
 		NetworkManager.shared.callAPI(.phoneNumber(number: phoneNumber), responseType: PhoneNumberModel.self)
 			.sink { result in

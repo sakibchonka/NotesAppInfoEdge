@@ -10,6 +10,8 @@ import SwiftUI
 struct PhoneNumberScreen: View {
 	
 	@StateObject private var phoneNumVM = PhoneNumberViewModel()
+	@StateObject var alertManager = AlertManager()
+	
 	@State private var showOTPScreen = false
 	
 	var body: some View {
@@ -36,6 +38,11 @@ struct PhoneNumberScreen: View {
 				}
 				
 				Button {
+					
+					guard phoneNumVM.isValidPhoneNumber else {
+						alertManager.show(title: "Invalid Phone Number", message: "Please enter a 10-digit number")
+						return
+					}
 					phoneNumVM.sendPhoneNumber { success in
 						if success {
 							showOTPScreen = true
@@ -53,13 +60,17 @@ struct PhoneNumberScreen: View {
 						.clipShape(Capsule())
 				}
 				.padding(.top, 12.0)
-				
 			}
 			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 			.padding(.top, 80)
 			.padding(.leading, 30)
 			.navigationDestination(isPresented: $showOTPScreen) {
 				OTPScreen(otpVM: OTPViewModel(phoneNumberWithCountryCode: phoneNumVM.countryCode + phoneNumVM.phoneNumber), phoneNumVM: phoneNumVM)
+			}
+			.alert(alertManager.title, isPresented: $alertManager.isPresented) {
+				Button("Ok", role: .cancel) {}
+			} message: {
+				Text(alertManager.message)
 			}
 		}
 		

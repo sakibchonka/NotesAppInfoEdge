@@ -13,6 +13,7 @@ struct OTPScreen: View {
 	@ObservedObject var phoneNumVM: PhoneNumberViewModel
 	
 	@Environment(\.dismiss) private var dismiss
+	@Environment(\.colorScheme) private var colorScheme
 	
 	var body: some View {
 		VStack(alignment: .leading, spacing: 8.0) {
@@ -27,7 +28,7 @@ struct OTPScreen: View {
 				} label: {
 					Image(systemName: "pencil")
 						.frame(width: 14.0, height: 14.0)
-						.foregroundStyle(.black)
+						.foregroundStyle(colorScheme == .dark ? .white : .black)
 						.fontWeight(.heavy)
 				}
 			}
@@ -49,10 +50,11 @@ struct OTPScreen: View {
 					otpVM.verifyOTP()
 				} label: {
 					Text("Continue")
-						.fontWeight(.bold)
+						.font(.subheadline)
+						.fontWeight(.semibold)
 						.foregroundStyle(.black)
-						.frame(maxWidth: 96)
-						.padding()
+						.padding(.horizontal, 20)
+						.padding(.vertical, 8)
 						.background(Color.yellow)
 						.clipShape(Capsule())
 				}

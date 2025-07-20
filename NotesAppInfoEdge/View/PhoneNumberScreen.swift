@@ -18,8 +18,8 @@ struct PhoneNumberScreen: View {
 		NavigationStack {
 			VStack(alignment: .leading, spacing: 8.0) {
 				Text("Get OTP")
-					.font(.title.weight(.regular))
-				Text("Enter Your \nPhone Number")
+					.font(.title2)
+				Text("Enter Your Phone Number")
 					.font(.largeTitle.bold())
 				
 				HStack(spacing: 8.0) {
@@ -52,10 +52,11 @@ struct PhoneNumberScreen: View {
 					}
 				} label: {
 					Text("Continue")
-						.fontWeight(.bold)
+						.font(.subheadline)
+						.fontWeight(.semibold)
 						.foregroundStyle(.black)
-						.frame(maxWidth: 96)
-						.padding()
+						.padding(.horizontal, 20)
+						.padding(.vertical, 8)
 						.background(Color.yellow)
 						.clipShape(Capsule())
 				}
